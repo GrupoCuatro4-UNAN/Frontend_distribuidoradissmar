@@ -1,6 +1,7 @@
 import React from "react";
 import { Row, Col, Form, Button, Card, Alert } from "react-bootstrap";
 import "../../app.css";
+import logo from "/vite.png";
 
 const LoginForm = ({ email, password, error, setEmail, setPassword, manejarEnvio }) => {
   return (
@@ -8,7 +9,8 @@ const LoginForm = ({ email, password, error, setEmail, setPassword, manejarEnvio
       <Col md={6} lg={5} xl={4}>
         <Card className="p-4 shadow-lg">
           <Card.Body>
-            <h3 className="text-center mb-4">Iniciar Sesión</h3>
+            
+            <h3 className="text-center mb-4"> <img alt="" src={logo} width="45" height="53" className="d-inline-block align-center" />{" "}Iniciar Sesión</h3>
             {error && <Alert variant="danger">{error}</Alert>}
             <Form onSubmit={manejarEnvio}>
               <Form.Group className="mb-3" controlId="usuario">
