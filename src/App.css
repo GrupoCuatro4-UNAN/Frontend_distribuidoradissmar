@@ -1,6 +1,6 @@
 .color-navbar {
-  background-color: #368fa3 !important;
-  background-image: linear-gradient(19deg, #746aff 0%, #ccd8ff 100%,  #746aff 60%);
+  background-color: #292d2e !important;
+  background-image: linear-gradient(19deg, #89caf3 0%, #9381f5 100%, #55558f 60%);
 }
 
 .color-texto-marca {
@@ -9,4 +9,11 @@
 
 .margen-superior-main {
   margin-top: 100px;
+}
+
+body {
+  background-color: #ffffff;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }

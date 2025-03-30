@@ -124,7 +124,7 @@ const Encabezado = () => {
               </Nav.Link>
 
               {/* Opción de navegación a Detalles_Compras*/}
-              <Nav.Link
+              { /* <Nav.Link
                 onClick={() => navegarA("/detalles_Compras")}
                 className={estaColapsado ? "text-black" : "text-white"}
               >
@@ -132,7 +132,7 @@ const Encabezado = () => {
                 <strong>Detalles_Compras</strong>
               </Nav.Link>
 
-              {/* Opción de navegación a Detalles_Ventas*/}
+               Opción de navegación a Detalles_Ventas
               <Nav.Link
                 onClick={() => navegarA("/detalles_ventas")}
                 className={estaColapsado ? "text-black" : "text-white"}
@@ -140,7 +140,7 @@ const Encabezado = () => {
                 {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
                 <strong>Detalles_Ventas</strong>
               </Nav.Link>
-
+*/ }
               {/* Opción de navegación a Productos*/}
               <Nav.Link
                 onClick={() => navegarA("/productos")}

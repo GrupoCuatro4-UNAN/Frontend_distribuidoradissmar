@@ -5,6 +5,7 @@ import logo from "/vite.png";
 
 const LoginForm = ({ email, password, error, setEmail, setPassword, manejarEnvio }) => {
   return (
+  
     <Row className="w-100 justify-content-center">
       <Col md={6} lg={5} xl={4}>
         <Card className="p-4 shadow-lg">
@@ -43,6 +44,7 @@ const LoginForm = ({ email, password, error, setEmail, setPassword, manejarEnvio
         </Card>
       </Col>
     </Row>
+    
   );
 };
 
