@@ -35,6 +35,8 @@ const TablaAbonos = ({ abonos, cargando, error }) => {
       </tbody>
     </Table>
   );
+
+  
 };
 
 // Exportación del componente

@@ -1,51 +1,112 @@
-// Importaciones necesarias para la vista
 import React, { useState, useEffect } from 'react';
-import TablaClientes from '../components/clientes/TablaClientes'; // Importa el componente de tabla
-import { Container } from "react-bootstrap";
+import { Container, Button, Spinner, Alert } from 'react-bootstrap';
+import TableClientes from '../components/clientes/TablaClientes';
+import ModalRegistroCliente from '../components/clientes/ModalRegistroCliente';
 
-// Declaración del componente Categorias
 const Clientes = () => {
-  // Estados para manejar los datos, carga y errores
-  const [listaClientes, setListaClientes] = useState([]); // Almacena los datos de la API
-  const [cargando, setCargando] = useState(true);            // Controla el estado de carga
-  const [errorCarga, setErrorCarga] = useState(null);        // Maneja errores de la petición
+    const [listaClientes, setListaClientes] = useState([]);
+    const [cargando, setCargando] = useState(true);
+    const [errorCarga, setErrorCarga] = useState(null);
+    const [mostrarModal, setMostrarModal] = useState(false);
+    const [nuevoCliente, setNuevoCliente] = useState({
+        nombre: '',
+        apellido: '',
+        celular: '',
+        direccion: '',
+        cedula: ''
+    });
 
-  // Lógica de obtención de datos con useEffect
-  useEffect(() => {
-    const obtenerClientes = async () => { // Método renombrado a español
-      try {
-        const respuesta = await fetch('http://localhost:3000/api/clientes');
-        if (!respuesta.ok) {
-          throw new Error('Error al cargar los clientes');
+    // Función reutilizable para obtener clientes
+    const obtenerClientes = async () => {
+        try {
+            setCargando(true);
+            const respuesta = await fetch('http://localhost:3000/api/clientes');
+            
+            if (!respuesta.ok) {
+                throw new Error('Error al cargar los clientes');
+            }
+            
+            const datos = await respuesta.json();
+            setListaClientes(datos);
+            setErrorCarga(null);
+        } catch (error) {
+            setErrorCarga(error.message);
+        } finally {
+            setCargando(false);
         }
-        const datos = await respuesta.json();
-        setListaClientes(datos);    // Actualiza el estado con los datos
-        setCargando(false);           // Indica que la carga terminó
-      } catch (error) {
-        setErrorCarga(error.message); // Guarda el mensaje de error
-        setCargando(false);           // Termina la carga aunque haya error
-      }
     };
-    obtenerClientes();            // Ejecuta la función al montar el componente
-  }, []);                           // Array vacío para que solo se ejecute una vez
 
-  // Renderizado de la vista
-  return (
-    <>
-      <Container className="mt-5">
-        <br />
-        <h3>Clientes</h3>
+    // Cargar clientes al montar el componente
+    useEffect(() => {
+        obtenerClientes();
+    }, []);
 
-        {/* Pasa los estados como props al componente TablaCategorias */}
-        <TablaClientes
-          clientes={listaClientes}
-          cargando={cargando}
-          error={errorCarga}
-        />
-      </Container>
-    </>
-  );
+    // Manejar cambios en los inputs del modal
+    const manejarCambioInput = (e) => {
+        const { name, value } = e.target;
+        setNuevoCliente(prev => ({ ...prev, [name]: value }));
+    };
+
+    // Registrar nuevo cliente
+    const agregarCliente = async () => {
+        try {
+            const respuesta = await fetch('http://localhost:3000/api/registrarclientes', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(nuevoCliente)
+            });
+
+            if (!respuesta.ok) {
+                throw new Error('Error al registrar el cliente');
+            }
+
+            // Limpiar formulario y actualizar lista
+            setNuevoCliente({
+                nombre: '',
+                apellido: '',
+                celular: '',
+                direccion: '',
+                cedula: ''
+            });
+            setMostrarModal(false);
+            await obtenerClientes(); // Refrescar la lista
+        } catch (error) {
+            setErrorCarga(error.message);
+        }
+    };
+
+    return (
+        <Container className="mt-4">
+            <div className="d-flex justify-content-between align-items-center mb-4">
+                <h2>Gestión de Clientes</h2>
+                <Button variant="primary" onClick={() => setMostrarModal(true)}>
+                    <i className="fas fa-plus me-2"></i>Nuevo Cliente
+                </Button>
+            </div>
+
+            {errorCarga && <Alert variant="danger">{errorCarga}</Alert>}
+
+            {cargando ? (
+                <div className="text-center">
+                    <Spinner animation="border" variant="primary" />
+                    <p>Cargando clientes...</p>
+                </div>
+            ) : (
+                <TableClientes clientes={listaClientes} />
+            )}
+
+            <ModalRegistroCliente
+                mostrarModal={mostrarModal}
+                setMostrarModal={setMostrarModal}
+                nuevoCliente={nuevoCliente}
+                manejarCambioInput={manejarCambioInput}
+                agregarCliente={agregarCliente}
+                errorCarga={errorCarga}
+            />
+        </Container>
+    );
 };
 
-// Exportación del componente
 export default Clientes;

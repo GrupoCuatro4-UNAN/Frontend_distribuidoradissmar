@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container } from "react-bootstrap";
 
+
 const Inicio = () => {
   const [nombreUsuario, setNombreUsuario] = useState("");
   const navegar = useNavigate();

@@ -30,7 +30,7 @@ const TablaCreditos = ({ creditos, cargando, error }) => {
             <td>{credito.tasa_interes}%</td>
             <td>{credito.fecha_vencimiento}</td>
             <td>{credito.monto_credito} C$</td>
-            <td>{credito.limite_credito} C$</td>
+            <td>{credito.limite_credito} C$ </td>
           </tr>
         ))}
       </tbody>
