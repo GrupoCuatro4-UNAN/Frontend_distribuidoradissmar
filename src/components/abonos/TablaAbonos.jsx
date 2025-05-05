@@ -1,8 +1,16 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Paginacion from '../ordenamiento/Paginacion';
 
-const TablaAbonos = ({ abonos, cargando, error }) => {
+const TablaAbonos = ({
+  abonos,
+  cargando,
+  error,
+  totalElementos,
+  elementosPorPagina,
+  paginaActual,
+  establecerPaginaActual }) => {
   // Renderizado condicional según el estado recibido por props
   if (cargando) {
     return <div>Cargando abonos...</div>; // Muestra mensaje mientras carga
@@ -13,30 +21,40 @@ const TablaAbonos = ({ abonos, cargando, error }) => {
 
   // Renderizado de la tabla con los datos recibidos
   return (
-    <Table striped bordered hover responsive>
-      <thead>
-        <tr>
-        <th>ID Abonos</th>
-          <th>ID Cliente</th>
-          <th>Monto</th>
-          <th>Fecha</th>
-        </tr>
-      </thead>
-      <tbody>
-        {abonos.map((abono) => (
-          <tr key={abono.id_abono}>
-            <td>{abono.id_abono}</td>
-            <td>{abono.id_cliente}</td>
-            <td>{abono.monto}</td>
-            <td>{abono.fecha_abono}</td>
-
+    <>
+      <Table striped bordered hover responsive>
+        <thead>
+          <tr>
+            <th>ID Abonos</th>
+            <th>ID Cliente</th>
+            <th>Monto</th>
+            <th>Fecha</th>
           </tr>
-        ))}
-      </tbody>
-    </Table>
+        </thead>
+        <tbody>
+          {abonos.map((abono) => (
+            <tr key={abono.id_abono}>
+              <td>{abono.id_abono}</td>
+              <td>{abono.id_cliente}</td>
+              <td>{abono.monto}</td>
+              <td>{abono.fecha_abono}</td>
+
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+
+      <Paginacion
+        elementosPorPagina={elementosPorPagina}
+        totalElementos={totalElementos}
+        paginaActual={paginaActual}
+        establecerPaginaActual={establecerPaginaActual}
+      />
+
+    </>
   );
 
-  
+
 };
 
 // Exportación del componente
