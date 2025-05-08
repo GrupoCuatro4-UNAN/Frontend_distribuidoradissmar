@@ -47,6 +47,14 @@ const TablaProductos = ({
                 >
                   <i className="bi bi-trash"></i>
                 </Button>
+                <Button
+                  variant="outline-warning"
+                  size="sm"
+                  className="me-2"
+                  onClick={() => abrirModalActualizacion(venta)}
+                >
+                  <i className="bi bi-pencil"></i>
+                </Button>
               </td>
             </tr>
           ))}

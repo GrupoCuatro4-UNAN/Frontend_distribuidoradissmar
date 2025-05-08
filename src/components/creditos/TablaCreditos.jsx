@@ -1,8 +1,8 @@
 import React from 'react';
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const TablaCreditos = ({ creditos, cargando, error }) => {
+const TablaCreditos = ({ creditos, cargando, error, abrirModalEliminacion }) => {
   if (cargando) return <div>Cargando créditos...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -18,6 +18,7 @@ const TablaCreditos = ({ creditos, cargando, error }) => {
           <th>Fecha de vencimiento</th>
           <th>Monto</th>
           <th>Cantidad Max</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -31,6 +32,23 @@ const TablaCreditos = ({ creditos, cargando, error }) => {
             <td>{credito.fecha_vencimiento}</td>
             <td>{credito.monto_credito} C$</td>
             <td>{credito.limite_credito} C$ </td>
+            <td>
+              <Button
+                variant="outline-danger"
+                size="sm"
+                onClick={() => abrirModalEliminacion(credito)}
+              >
+                <i className="bi bi-trash"></i>
+              </Button>
+              <Button
+                variant="outline-warning"
+                size="sm"
+                className="me-2"
+                onClick={() => abrirModalActualizacion(venta)}
+              >
+                <i className="bi bi-pencil"></i>
+              </Button>
+            </td>
           </tr>
         ))}
       </tbody>

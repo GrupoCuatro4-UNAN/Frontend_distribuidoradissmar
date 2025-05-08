@@ -17,7 +17,7 @@ const ModalRegistroAbono = ({
       </Modal.Header>
       <Modal.Body>
         <Form>
-        <Form.Group className="mb-3" controlId="formCliente">
+          <Form.Group className="mb-3" controlId="formCliente">
             <Form.Label>Cliente</Form.Label>
             <Form.Select
               name="id_cliente"

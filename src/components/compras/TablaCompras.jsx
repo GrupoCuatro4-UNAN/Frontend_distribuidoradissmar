@@ -33,11 +33,26 @@ const TablaCompras = ({
               <td>{compra.fecha_compra}</td>
               <td>
                 <Button
+                  variant="outline-success"
+                  size="sm"
+                  onClick={() => obtenerDetalles(compra.id_compra)}
+                >
+                  <i className="bi bi-list-ul"></i>
+                </Button>
+                <Button
                   variant="outline-danger"
                   size="sm"
                   onClick={() => abrirModalEliminacion(compra)}
                 >
                   <i className="bi bi-trash"></i>
+                </Button>
+                <Button
+                  variant="outline-warning"
+                  size="sm"
+                  className="me-2"
+                  onClick={() => abrirModalActualizacion(venta)}
+                >
+                  <i className="bi bi-pencil"></i>
                 </Button>
               </td>
             </tr>

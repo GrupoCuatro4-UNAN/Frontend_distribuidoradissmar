@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Paginacion from '../ordenamiento/Paginacion';
 
@@ -10,7 +10,8 @@ const TablaAbonos = ({
   totalElementos,
   elementosPorPagina,
   paginaActual,
-  establecerPaginaActual }) => {
+  establecerPaginaActual,
+  abrirModalEliminacion }) => {
   // Renderizado condicional según el estado recibido por props
   if (cargando) {
     return <div>Cargando abonos...</div>; // Muestra mensaje mientras carga
@@ -29,6 +30,7 @@ const TablaAbonos = ({
             <th>ID Cliente</th>
             <th>Monto</th>
             <th>Fecha</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -38,6 +40,24 @@ const TablaAbonos = ({
               <td>{abono.id_cliente}</td>
               <td>{abono.monto}</td>
               <td>{abono.fecha_abono}</td>
+
+              <td>
+                <Button
+                  variant="outline-danger"
+                  size="sm"
+                  onClick={() => abrirModalEliminacion(abono)}
+                >
+                  <i className="bi bi-trash"></i>
+                </Button>
+                <Button
+                  variant="outline-warning"
+                  size="sm"
+                  className="me-2"
+                  onClick={() => abrirModalActualizacion(venta)}
+                >
+                  <i className="bi bi-pencil"></i>
+                </Button>
+              </td>
 
             </tr>
           ))}

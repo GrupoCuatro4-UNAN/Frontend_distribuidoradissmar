@@ -12,7 +12,8 @@ const Compras = () => {
   const [errorCarga, setErrorCarga] = useState(null);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [nuevaCompra, setNuevaCompra] = useState({
-    fecha_compra: new Date().toISOString().split('T')[0] // Fecha actual por defecto
+    fecha_compra: new Date(),
+    total_compra: 0
   });
   const [mostrarModalEliminacion, setMostrarModalEliminacion] = useState(false);
   const [compraAEliminar, setCompraAEliminar] = useState(null);
@@ -20,6 +21,11 @@ const Compras = () => {
   const [textoBusqueda, setTextoBusqueda] = useState("");
   const [paginaActual, establecerPaginaActual] = useState(1);
   const elementosPorPagina = 5; // Número de elementos por página
+  const [mostrarModalRegistro, setMostrarModalRegistro] = useState(false);
+  const [productos, setProductos] = useState([]);
+
+  const [detallesCompra, setDetallesCompra] = useState([]);
+
 
   // Calcular elementos paginados
   const comprasPaginadas = comprasFiltradas.slice(
@@ -36,6 +42,17 @@ const Compras = () => {
         compra.fecha_compra.toLowerCase().includes(Date)
     );
     setComprasFiltradas(filtradas);
+  };
+
+  const obtenerProductos = async () => {
+    try {
+      const respuesta = await fetch('http://localhost:3000/api/productos');
+      if (!respuesta.ok) throw new Error('Error al cargar los productos');
+      const datos = await respuesta.json();
+      setProductos(datos);
+    } catch (error) {
+      setErrorCarga(error.message);
+    }
   };
 
   const eliminarCompra = async () => {
@@ -82,6 +99,7 @@ const Compras = () => {
   // Obtener compras al montar el componente
   useEffect(() => {
     obtenerCompras();
+    obtenerProductos();
   }, []);
 
   // Manejar cambios en los inputs
@@ -93,7 +111,47 @@ const Compras = () => {
     }));
   };
 
-  // Registrar nueva compra
+  const agregarDetalle = (detalle) => {
+    setDetallesCompra(prev => [...prev, detalle]);
+    setNuevaCompra(prev => ({
+      ...prev,
+      total_compra: prev.total_compra + (detalle.cantidad * detalle.precio_unitario)
+    }));
+  };
+
+  const agregarCompra = async () => {
+    if (!nuevaCompra.fecha_compra || detallesCompra.length === 0) {
+      setErrorCarga("Por favor, selecciona una fecha y agrega al menos un producto.");
+      return;
+    }
+
+    try {
+      const compraData = {
+        fecha_compra: nuevaCompra.fecha_compra.toISOString(),
+        total_compra: detallesCompra.reduce((sum, d) => sum + (d.cantidad * d.precio_unitario), 0),
+        detalles: detallesCompra
+      };
+
+      const respuesta = await fetch('http://localhost:3000/api/registrarcompra', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(compraData)
+      });
+
+      if (!respuesta.ok) throw new Error('Error al registrar la compra');
+
+      await obtenerCompras();
+      setNuevaCompra({ fecha_compra: new Date(), total_compra: 0 });
+      setDetallesCompra([]);
+      setMostrarModalRegistro(false);
+      setErrorCarga(null);
+    } catch (error) {
+      setErrorCarga(error.message);
+    }
+  };
+
+
+  /* Registrar nueva compra
   const registrarCompra = async () => {
     if (!nuevaCompra.fecha_compra) {
       setErrorCarga("La fecha de compra es obligatoria");
@@ -126,25 +184,20 @@ const Compras = () => {
       setErrorCarga(error.message);
       console.error('Error al registrar compra:', error);
     }
-  };
+  };*/
 
   return (
     <Container className="mt-5">
-      <h3>Gestión de Compras</h3>
+      <h3>Gestión de Compras con detalles</h3>
 
       <Row>
         <Col lg={2} md={4} sm={4} xs={5}>
-          <Button variant="primary" onClick={() => setMostrarModal(true)} style={{ width: "100%" }}>
+          <Button variant="primary" onClick={() => setMostrarModalRegistro(true)} style={{ width: "100%" }}>
             Nueva Compra
           </Button>
         </Col>
-        <Col lg={5} md={8} sm={8} xs={7}>
-          <CuadroBusquedas
-            textoBusqueda={textoBusqueda}
-            manejarCambioBusqueda={manejarCambioBusqueda}
-          />
-        </Col>
       </Row>
+      <br />
 
       {errorCarga && <Alert variant="danger">{errorCarga}</Alert>}
 
@@ -167,12 +220,16 @@ const Compras = () => {
           />
 
           <ModalRegistroCompra
-            mostrarModal={mostrarModal}
-            setMostrarModal={setMostrarModal}
-            nuevaCompra={nuevaCompra}
-            manejarCambioInput={manejarCambioInput}
-            registrarCompra={registrarCompra}
+            mostrarModal={mostrarModalRegistro}
+            setMostrarModal={setMostrarModalRegistro}
+            nuevaCompra={nuevaCompra}  // Cambiado a nuevaCompra
+            setNuevaCompra={setNuevaCompra}  // Cambiado a setNuevaCompra
+            detallesCompra={detallesCompra}  // Cambiado a detallesCompra
+            setDetallesCompra={setDetallesCompra}  // Cambiado a setDetallesCompra
+            agregarDetalle={agregarDetalle}
+            agregarCompra={agregarCompra}  // Cambiado a agregarCompra
             errorCarga={errorCarga}
+            productos={productos}  // Solo productos son necesarios para el modal
           />
 
           <ModalEliminacionCompra
@@ -180,6 +237,7 @@ const Compras = () => {
             setMostrarModalEliminacion={setMostrarModalEliminacion}
             eliminarCompra={eliminarCompra}
           />
+
 
         </>
       )}

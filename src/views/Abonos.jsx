@@ -3,6 +3,7 @@ import TablaAbonos from '../components/abonos/TablaAbonos';
 import { Container, Button, Spinner, Alert, Row, Col } from "react-bootstrap";
 import ModalRegistroAbono from '../components/abonos/ModalRegistroAbono';
 import CuadroBusquedas from '../components/busquedas/CuadroBusquedas';
+import ModalEliminacionAbono from '../components/abonos/ModalEliminacionAbono';
 
 
 const Abonos = () => {
@@ -22,12 +23,42 @@ const Abonos = () => {
   const [textoBusqueda, setTextoBusqueda] = useState("");
   const [paginaActual, establecerPaginaActual] = useState(1);
   const elementosPorPagina = 5; // Número de elementos por página
+  const [mostrarModalEliminacion, setMostrarModalEliminacion] = useState(false);
+  const [abonoAEliminar, setAbonoAEliminar] = useState(null);
 
   // Calcular elementos paginados
   const abonosPaginadas = abonosFiltrados.slice(
     (paginaActual - 1) * elementosPorPagina,
     paginaActual * elementosPorPagina
   );
+
+  const eliminarAbono = async () => {
+    if (!abonoAEliminar) return;
+
+    try {
+      const respuesta = await fetch(`http://localhost:3000/api/eliminarabono/${abonoAEliminar.id_abono}`, {
+        method: 'DELETE',
+      });
+
+      if (!respuesta.ok) {
+        throw new Error('Error al eliminar el abono');
+      }
+
+      await obtenerAbonos(); // Refresca la lista
+      setMostrarModalEliminacion(false);
+      establecerPaginaActual(1); // Regresa a la primera página
+      setAbonoAEliminar(null);
+      setErrorCarga(null);
+    } catch (error) {
+      setErrorCarga(error.message);
+    }
+  };
+
+  const abrirModalEliminacion = (abono) => {
+    setAbonoAEliminar(abono);
+    setMostrarModalEliminacion(true);
+  };
+
 
   // Función para obtener abonos
   const obtenerAbonos = async () => {
@@ -175,6 +206,7 @@ const Abonos = () => {
             elementosPorPagina={elementosPorPagina} // Elementos por página
             paginaActual={paginaActual} // Página actual
             establecerPaginaActual={establecerPaginaActual}
+            abrirModalEliminacion={abrirModalEliminacion} // Método para abrir modal de eliminación
           />
 
           <ModalRegistroAbono
@@ -187,6 +219,13 @@ const Abonos = () => {
             clientes={clientes}
             cargandoClientes={cargandoClientes}
           />
+
+          <ModalEliminacionAbono
+            mostrarModalEliminacion={mostrarModalEliminacion}
+            setMostrarModalEliminacion={setMostrarModalEliminacion}
+            eliminarAbono={eliminarAbono}
+          />
+
         </>
       )}
     </Container>
