@@ -1,19 +1,146 @@
-.color-navbar {
-  background-color: #292d2e !important;
-  background-image: linear-gradient(19deg, #83c2e9 0%, #352bc9 100%,  #55558f 60%);
-}
-
-.color-texto-marca {
-  color: #1e3d87 !important;
-}
-
-.margen-superior-main {
-  margin-top: 100px;
+/* --- Variables CSS Globales (¡Muy recomendado!) --- */
+:root {
+  --color-primario-fondo: #0D1B2A; /* Azul muy oscuro, casi negro */
+  --color-secundario-fondo: #1B263B; /* Azul oscuro */
+  --color-terciario-fondo: #2A3A50; /* Un poco más claro para elementos */
+  --color-acento-principal: #7DF9FF; /* Azul eléctrico/Cian brillante */
+  --color-acento-secundario: #A2FACF; /* Verde menta claro */
+  --color-texto-principal: #E0E0E0; /* Gris muy claro, casi blanco */
+  --color-texto-secundario: #B0B0B0; /* Gris más suave */
+  --fuente-principal: 'Exo 2', sans-serif;
+  --fuente-titulos: 'Rajdhani', sans-serif;
+  --border-radius-sutil: 4px;
+  --transition-rapida: all 0.3s ease-in-out;
 }
 
 body {
-  background-image: url("https://img.freepik.com/free-vector/shiny-white-gray-background-with-wavy-lines_1017-25101.jpg?t=st=1743626003~exp=1743629603~hmac=35e22dc7be575cf294d07f8d0c019380abdacb43d25b84e07511373d6d978205&w=1060"); 
-  background-size: cover; 
-  background-position: center; 
-  background-repeat: no-repeat; 
+  background-color: var(--color-primario-fondo);
+  /* Opción 1: Fondo sólido (ya puesto arriba) */
+  /* Opción 2: Degradado sutil */
+  /* background-image: linear-gradient(180deg, var(--color-primario-fondo) 0%, var(--color-secundario-fondo) 100%); */
+  /* Opción 3: Patrón SVG o imagen sutil (asegúrate de que sea oscura y no distraiga) */
+  /* background-image: url("path/to/futuristic-pattern.svg"); */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Para que el fondo no se mueva con el scroll */
+  font-family: var(--fuente-principal);
+  color: var(--color-texto-principal);
+  margin: 0;
+  padding: 0;
+}
+
+.margen-superior-main { /* Reemplazar con padding en el body o un espaciador dedicado si es necesario */
+  padding-top: 100px; /* Aplicar al contenedor principal de tu contenido, no al main directamente si es posible */
+}
+
+/* --- Navbar --- */
+.color-navbar {
+  background-color: rgba(27, 38, 59, 0.8); /* Usando var(--color-secundario-fondo) con transparencia */
+  backdrop-filter: blur(10px); /* Efecto Glassmorphism */
+  -webkit-backdrop-filter: blur(10px); /* Para Safari */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  padding: 1rem 2rem; /* Ajusta el padding */
+  position: fixed; /* Para que se quede fija arriba */
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  border-bottom: 1px solid rgba(125, 249, 255, 0.2); /* Borde sutil con color de acento */
+}
+
+/* Ajusta esto según la estructura de tu navbar de Bootstrap */
+.navbar-brand .color-texto-marca,
+.color-navbar .nav-link { /* Asumiendo que usas .nav-link de Bootstrap */
+  font-family: var(--fuente-titulos);
+  color: var(--color-acento-principal) !important; /* Forzar si es necesario, pero idealmente ajusta especificidad */
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: var(--transition-rapida);
+}
+
+.color-navbar .nav-link:hover,
+.navbar-brand .color-texto-marca:hover {
+  color: #FFFFFF !important;
+  text-shadow: 0 0 10px var(--color-acento-principal);
+}
+
+/* --- Contenido Principal (Tablas, Botones CRUD) --- */
+.main-content-area { /* Un div que envuelva tus tablas y controles CRUD */
+  padding: calc(var(--navbar-height, 80px) + 30px) 30px 30px; /* El var(--navbar-height) deberías definirlo o calcularlo */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tabla-futurista {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-terciario-fondo);
+  border-radius: var(--border-radius-sutil);
+  overflow: hidden; /* Para que el border-radius afecte a las celdas */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.tabla-futurista th,
+.tabla-futurista td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid rgba(125, 249, 255, 0.1); /* Líneas de separación sutiles */
+}
+
+.tabla-futurista th {
+  background-color: rgba(42, 58, 80, 0.7); /* Un poco más oscuro que el fondo de la tabla */
+  color: var(--color-acento-principal);
+  font-family: var(--fuente-titulos);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.tabla-futurista tr:last-child td {
+  border-bottom: none;
+}
+
+.tabla-futurista tr:hover {
+  background-color: rgba(42, 58, 80, 0.5); /* Un hover sutil */
+}
+
+/* Botones CRUD */
+.btn-futurista {
+  font-family: var(--fuente-titulos);
+  background-color: transparent;
+  border: 2px solid var(--color-acento-principal);
+  color: var(--color-acento-principal);
+  padding: 10px 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: var(--border-radius-sutil);
+  cursor: pointer;
+  transition: var(--transition-rapida);
+  margin: 5px;
+}
+
+.btn-futurista:hover,
+.btn-futurista:focus {
+  background-color: var(--color-acento-principal);
+  color: var(--color-primario-fondo);
+  box-shadow: 0 0 15px var(--color-acento-principal);
+  outline: none;
+}
+
+.btn-futurista.btn-peligro { /* Para el botón de eliminar */
+  border-color: #FF6B6B;
+  color: #FF6B6B;
+}
+
+.btn-futurista.btn-peligro:hover,
+.btn-futurista.btn-peligro:focus {
+  background-color: #FF6B6B;
+  color: var(--color-primario-fondo);
+  box-shadow: 0 0 15px #FF6B6B;
+}
+
+/* Podrías añadir iconos a los botones usando FontAwesome o SVGs */
+.btn-futurista i {
+  margin-right: 8px;
 }

@@ -23,7 +23,7 @@ const TablaVentas = ({ ventas, cargando, error, obtenerDetalles, abrirModalElimi
             <td>{venta.id_venta}</td>
             <td>{venta.fecha_venta}</td>
             <td>{venta.id_cliente}</td>
-            <td>{venta.total}si</td>
+            <td>{venta.cridito}</td>
             <td>
               <Button
                 variant="outline-success"

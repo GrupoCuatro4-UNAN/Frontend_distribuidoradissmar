@@ -26,7 +26,7 @@ const Ventas = () => {
   });
   const [detallesNuevos, setDetallesNuevos] = useState([]);
   const [mostrarModalActualizacion, setMostrarModalActualizacion] = useState(false);
-  const [ventaAEditar, setVentaAEditar] = useState(null);
+  const [ventaActualizada, setVentaAEditar] = useState(null);
   const [detallesEditados, setDetallesEditados] = useState([]);
 
 
@@ -263,6 +263,18 @@ const Ventas = () => {
         setDetallesVenta={setDetallesNuevos}
         agregarDetalle={agregarDetalle}
         agregarVenta={agregarVenta}
+        errorCarga={errorCarga}
+        clientes={clientes}
+        productos={productos}
+      />
+
+      <ModalActualizacionVenta
+        mostrarModal={mostrarModalActualizacion}
+        setMostrarModal={setMostrarModalActualizacion}
+        venta={ventaActualizada}
+        detallesVenta={detallesEditados}
+        setDetallesVenta={setDetallesEditados}
+        actualizarVenta={actualizarVenta}
         errorCarga={errorCarga}
         clientes={clientes}
         productos={productos}
