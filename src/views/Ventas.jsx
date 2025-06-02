@@ -118,7 +118,7 @@ const Ventas = () => {
     try {
       const ventaData = {
         id_cliente: nuevaVenta.id_cliente,
-        fecha_venta: nuevaVenta.fecha_venta.toISOString(),
+        fecha_venta: nuevaVenta.fecha_venta.toLocaleString('en-CA', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).replace(',', ' '),
         total_venta: detallesNuevos.reduce((sum, d) => sum + (d.cantidad * d.precio_unitario), 0),
         detalles: detallesNuevos
       };
