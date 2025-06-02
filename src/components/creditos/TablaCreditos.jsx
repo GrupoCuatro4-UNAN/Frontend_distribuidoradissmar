@@ -2,7 +2,7 @@ import React from 'react';
 import { Table, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const TablaCreditos = ({ creditos, cargando, error, abrirModalEliminacion }) => {
+const TablaCreditos = ({ creditos, cargando, error, abrirModalEliminacion, abrirModalEdicion }) => {
   if (cargando) return <div>Cargando créditos...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -44,7 +44,7 @@ const TablaCreditos = ({ creditos, cargando, error, abrirModalEliminacion }) => 
                 variant="outline-warning"
                 size="sm"
                 className="me-2"
-                onClick={() => abrirModalActualizacion(venta)}
+                onClick={() => abrirModalEdicion(credito)}
               >
                 <i className="bi bi-pencil"></i>
               </Button>

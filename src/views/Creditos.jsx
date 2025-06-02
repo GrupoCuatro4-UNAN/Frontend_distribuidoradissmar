@@ -4,6 +4,7 @@ import { Container, Button, Row, Col } from "react-bootstrap";
 import ModalRegistroCredito from '../components/creditos/ModalRegistroCredito';
 import CuadroBusquedas from '../components/busquedas/CuadroBusquedas';
 import ModalEliminacionCredito from '../components/creditos/ModalEliminacionCredito';
+import ModalEdicionCredito from '../components/creditos/ModalEdicionCredito';
 
 const Creditos = () => {
   const [listaCreditos, setListaCreditos] = useState([]);
@@ -24,6 +25,57 @@ const Creditos = () => {
   const [textoBusqueda, setTextoBusqueda] = useState("");
   const [mostrarModalEliminacion, setMostrarModalEliminacion] = useState(false);
   const [creditoAEliminar, setCreditoAEliminar] = useState(null);
+  const [mostrarModalEdicion, setMostrarModalEdicion] = useState(false);
+  const [creditoEditado, setCreditoEditado] = useState(null);
+
+
+  const abrirModalEdicion = (credito) => {
+    setCreditoEditado(credito);
+    setMostrarModalEdicion(true);
+  };
+
+
+  const manejarCambioInputEdicion = (e) => {
+    const { name, value } = e.target;
+    setCreditoEditado((prev) => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+
+  const actualizarCredito = async () => {
+    if (!creditoEditado) return;
+
+    // Asegurarse que la fecha esté en formato YYYY-MM-DD
+    const fechaFormateada = new Date(creditoEditado.fecha_vencimiento).toISOString().split("T")[0];
+
+    const datosActualizados = {
+      ...creditoEditado,
+      fecha_vencimiento: fechaFormateada,
+    };
+
+    try {
+      const respuesta = await fetch(`http://localhost:3000/api/creditos/${creditoEditado.id_credito}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datosActualizados),
+      });
+
+      if (!respuesta.ok) throw new Error("Error al actualizar el crédito");
+
+      await obtenerCreditos();
+      setMostrarModalEdicion(false);
+      setCreditoEditado(null);
+      setErrorCarga(null);
+    } catch (error) {
+      setErrorCarga(error.message);
+    }
+  };
+
+
 
   const manejarCambioInput = (e) => {
     const { name, value } = e.target;
@@ -52,7 +104,7 @@ const Creditos = () => {
 
       await obtenerCreditos(); // Refresca la lista
       setMostrarModalEliminacion(false);
-     //establecerPaginaActual(1); // Regresa a la primera página
+      //establecerPaginaActual(1); // Regresa a la primera página
       setCreditoAEliminar(null);
       setErrorCarga(null);
     } catch (error) {
@@ -67,9 +119,9 @@ const Creditos = () => {
 
     const filtrados = listaCreditos.filter(
       (credito) =>
-        credito.id_cliente.toLowerCase().includes(Number) ||
-        credito.monto_credito.toLowerCase().includes(texto) ||
-        credito.plazo_pago.toLowerCase().includes(texto)
+        credito.id_cliente.toString().includes(texto) ||
+        credito.monto_credito.toString().includes(texto) ||
+        credito.plazo_pago.toString().includes(texto)
     );
     setCreditosFiltrados(filtrados);
   };
@@ -167,7 +219,8 @@ const Creditos = () => {
         creditos={creditosFiltrados}
         cargando={cargando}
         error={errorCarga}
-        abrirModalEliminacion={abrirModalEliminacion} // Método para abrir modal de eliminación
+        abrirModalEliminacion={abrirModalEliminacion}
+        abrirModalEdicion={abrirModalEdicion}  // Método para abrir modal de eliminación
       />
 
       <ModalRegistroCredito
@@ -187,6 +240,17 @@ const Creditos = () => {
         setMostrarModalEliminacion={setMostrarModalEliminacion}
         eliminarCredito={eliminarCredito}
       />
+
+      <ModalEdicionCredito
+        mostrarModalEdicion={mostrarModalEdicion}
+        setMostrarModalEdicion={setMostrarModalEdicion}
+        creditoEditado={creditoEditado}
+        manejarCambioInputEdicion={manejarCambioInputEdicion}
+        actualizarCredito={actualizarCredito}
+        errorCarga={errorCarga}
+        clientes={listaClientes}
+      />
+
 
     </Container>
   );

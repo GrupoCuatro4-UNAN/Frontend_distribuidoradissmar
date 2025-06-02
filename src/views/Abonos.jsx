@@ -4,7 +4,7 @@ import { Container, Button, Spinner, Alert, Row, Col } from "react-bootstrap";
 import ModalRegistroAbono from '../components/abonos/ModalRegistroAbono';
 import CuadroBusquedas from '../components/busquedas/CuadroBusquedas';
 import ModalEliminacionAbono from '../components/abonos/ModalEliminacionAbono';
-
+import ModalEdicionAbono from '../components/abonos/ModalEdicionAbono';
 
 const Abonos = () => {
   // Estados para manejar los datos
@@ -25,12 +25,78 @@ const Abonos = () => {
   const elementosPorPagina = 5; // Número de elementos por página
   const [mostrarModalEliminacion, setMostrarModalEliminacion] = useState(false);
   const [abonoAEliminar, setAbonoAEliminar] = useState(null);
+  const [mostrarModalEdicionAbono, setMostrarModalEdicionAbono] = useState(false);
+  const [abonoEditado, setAbonoEditado] = useState(null);
+  const [errorCargaAbono, setErrorCargaAbono] = useState(null);
 
   // Calcular elementos paginados
   const abonosPaginadas = abonosFiltrados.slice(
     (paginaActual - 1) * elementosPorPagina,
     paginaActual * elementosPorPagina
   );
+
+  const manejarCambioInputEdicionAbono = (e) => {
+    const { name, value } = e.target;
+    setAbonoEditado(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+
+  const actualizarAbono = async () => {
+  if (!abonoEditado?.id_cliente || !abonoEditado?.monto || !abonoEditado?.fecha_abono) {
+    setErrorCargaAbono("Por favor, completa todos los campos obligatorios antes de guardar.");
+    return;
+  }
+
+  // Validamos y usamos la fecha sin convertirla a ISO si ya está en yyyy-MM-dd
+  let fechaFormateada = abonoEditado.fecha_abono;
+  if (abonoEditado.fecha_abono.includes('T')) {
+    fechaFormateada = new Date(abonoEditado.fecha_abono).toISOString().split('T')[0];
+  }
+
+  try {
+    const respuesta = await fetch(`http://localhost:3000/api/abonos/${abonoEditado.id_abono}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id_cliente: abonoEditado.id_cliente,
+        monto: abonoEditado.monto,
+        fecha_abono: fechaFormateada,
+      }),
+    });
+
+    if (!respuesta.ok) {
+      throw new Error('Error al actualizar el abono');
+    }
+
+    await obtenerAbonos(); // Recargar lista
+    setMostrarModalEdicionAbono(false); // Cerrar el modal correctamente
+    setAbonoEditado(null); // Limpiar estado
+    setErrorCargaAbono(null);
+  } catch (error) {
+    console.error("Error al actualizar abono:", error);
+    setErrorCargaAbono(error.message || "Error inesperado");
+  }
+};
+
+
+  const abrirModalEdicionAbono = (abono) => {
+  const fechaFormateada = new Date(abono.fecha_abono).toISOString().split('T')[0];
+
+  setAbonoEditado({
+    ...abono,
+    fecha_abono: fechaFormateada,
+  });
+
+  setMostrarModalEdicionAbono(true);
+  setErrorCargaAbono(null);
+};
+
+
 
   const eliminarAbono = async () => {
     if (!abonoAEliminar) return;
@@ -81,9 +147,9 @@ const Abonos = () => {
     setTextoBusqueda(texto);
 
     const filtrados = listaAbonos.filter(
-      (abono, cliente) =>
-        abono.monto.toLowerCase().includes(text) ||
-        cliente.nombre.toLowerCase().includes(text)
+      (abono) =>
+        abono.monto.toString().includes(texto) ||
+        abono.id_cliente.toString().includes(texto)
     );
     setAbonosFiltrados(filtrados);
   };
@@ -206,7 +272,8 @@ const Abonos = () => {
             elementosPorPagina={elementosPorPagina} // Elementos por página
             paginaActual={paginaActual} // Página actual
             establecerPaginaActual={establecerPaginaActual}
-            abrirModalEliminacion={abrirModalEliminacion} // Método para abrir modal de eliminación
+            abrirModalEliminacion={abrirModalEliminacion}
+            abrirModalEdicionAbono={abrirModalEdicionAbono} // Método para abrir modal de eliminación
           />
 
           <ModalRegistroAbono
@@ -225,6 +292,16 @@ const Abonos = () => {
             setMostrarModalEliminacion={setMostrarModalEliminacion}
             eliminarAbono={eliminarAbono}
           />
+
+          <ModalEdicionAbono
+            mostrarModalEdicion={mostrarModalEdicionAbono}
+            setMostrarModalEdicion={setMostrarModalEdicionAbono}
+            abonoEditado={abonoEditado}
+            manejarCambioInputEdicion={manejarCambioInputEdicionAbono}
+            actualizarAbono={actualizarAbono}
+            errorCarga={errorCargaAbono}
+          />
+
 
         </>
       )}

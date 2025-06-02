@@ -4,7 +4,7 @@ import { Container, Button, Row, Col } from "react-bootstrap";
 import ModalRegistroProducto from '../components/productos/ModalRegisterProducto';
 import CuadroBusquedas from '../components/busquedas/CuadroBusquedas';
 import ModalEliminacionProducto from '../components/productos/ModalEliminacionProducto';
-
+import ModalEdicionProducto from '../components/productos/ModalEdicionProducto';
 
 const Productos = () => {
   const [listaProductos, setListaProductos] = useState([]);
@@ -24,6 +24,54 @@ const Productos = () => {
   const [productoAEliminar, setProductoAEliminar] = useState(null);
   const [paginaActual, establecerPaginaActual] = useState(1);
   const elementosPorPagina = 5;
+  const [productoAEditar, setProductoAEditar] = useState(null); // Estado para el producto a editar
+  const [mostrarModalEdicion, setMostrarModalEdicion] = useState(false);
+  
+
+  const abrirModalEdicion = (producto) => {
+    setProductoAEditar(producto); // Establecemos el producto a editar
+    setMostrarModalEdicion(true); // Abrimos el modal
+  };
+
+  const manejarCambioInputEdicion = (e) => {
+    const { name, value } = e.target;
+    setProductoAEditar((prev) => ({
+        ...prev,
+        [name]: value,
+    }));
+};
+
+
+  const editarProducto = async () => {
+    const { nombre_producto, descripcion, precio_unitario, stock, categoria } = productoAEditar;
+
+    if (!nombre_producto || !descripcion || !precio_unitario || !stock || !categoria) {
+      setErrorCarga("Por favor, completa todos los campos antes de guardar.");
+      return;
+    }
+
+    try {
+      const respuesta = await fetch(`http://localhost:3000/api/productos/${productoAEditar.id_producto}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(productoAEditar),
+      });
+
+      if (!respuesta.ok) {
+        throw new Error('Error al actualizar el producto');
+      }
+
+      await obtenerProductos(); // Refresca la lista desde el servidor
+      setProductoAEditar(null); // Limpiar el estado del producto a editar
+      setMostrarModalEdicion(false); // Cerrar el modal
+      setErrorCarga(null);
+    } catch (error) {
+      setErrorCarga(error.message);
+    }
+  };
+
 
   const manejarCambioBusqueda = (e) => {
     const texto = e.target.value.toLowerCase();
@@ -168,6 +216,7 @@ const Productos = () => {
         paginaActual={paginaActual} // Página actual
         establecerPaginaActual={establecerPaginaActual} // Método para cambiar página
         abrirModalEliminacion={abrirModalEliminacion}
+        abrirModalEdicion={abrirModalEdicion}
       />
 
       <ModalRegistroProducto
@@ -183,6 +232,16 @@ const Productos = () => {
         mostrarModalEliminacion={mostrarModalEliminacion}
         setMostrarModalEliminacion={setMostrarModalEliminacion}
         eliminarProducto={eliminarProducto}
+      />
+
+
+      <ModalEdicionProducto
+        mostrarModal={mostrarModalEdicion}
+        setMostrarModal={setMostrarModal}
+        productoAEditar={productoAEditar}
+        manejarCambioInput={manejarCambioInputEdicion}
+        editarProducto={editarProducto}
+        errorCarga={errorCarga}
       />
 
     </Container>

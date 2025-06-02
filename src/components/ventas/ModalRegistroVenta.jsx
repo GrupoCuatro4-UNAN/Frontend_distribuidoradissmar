@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Modal, Form, Button, Table, Row, Col, FormControl } from "react-bootstrap";
 import AsyncSelect from 'react-select/async';
 import DatePicker from 'react-datepicker';
@@ -16,16 +16,13 @@ const ModalRegistroVenta = ({
     errorCarga,
     clientes,
     productos
-
 }) => {
     const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
     const [productoSeleccionado, setProductoSeleccionado] = useState(null);
     const [nuevoDetalle, setNuevoDetalle] = useState({ id_producto: '', cantidad: '', precio_unitario: '' });
 
-    // Calcular total de la venta
     const totalVenta = detallesVenta.reduce((sum, detalle) => sum + (detalle.cantidad * detalle.precio_unitario), 0);
 
-    // Cargar opciones para AsyncSelect
     const cargarClientes = (inputValue, callback) => {
         const filtrados = clientes.filter(cliente =>
             `${cliente.nombre}`.toLowerCase().includes(inputValue.toLowerCase())
@@ -47,7 +44,6 @@ const ModalRegistroVenta = ({
         })));
     };
 
-    // Manejar cambios en los selectores
     const manejarCambioCliente = (seleccionado) => {
         setClienteSeleccionado(seleccionado);
         setNuevaVenta(prev => ({ ...prev, id_cliente: seleccionado ? seleccionado.value : '' }));
@@ -62,23 +58,20 @@ const ModalRegistroVenta = ({
         }));
     };
 
-    // Manejar cambios en el detalle
     const manejarCambioDetalle = (e) => {
         const { name, value } = e.target;
         setNuevoDetalle(prev => ({ ...prev, [name]: value }));
     };
 
-    // Agregar detalle a la lista
     const manejarAgregarDetalle = () => {
         if (!nuevoDetalle.id_producto || !nuevoDetalle.cantidad || nuevoDetalle.cantidad <= 0) {
             alert("Por favor, selecciona un producto y una cantidad válida.");
             return;
         }
 
-        // Verificar stock
         const producto = productos.find(p => p.id_producto === nuevoDetalle.id_producto);
-        if (producto && nuevoDetalle.cantidad > producto.stock) {
-            alert(`Stock insuficiente de ${producto.nombre_producto}. Unidadades disponibles: ${producto.stock}`);
+        if (producto && parseInt(nuevoDetalle.cantidad) > producto.stock) {
+            alert(`Stock insuficiente de ${producto.nombre_producto}. Unidades disponibles: ${producto.stock}`);
             return;
         }
 
@@ -88,8 +81,21 @@ const ModalRegistroVenta = ({
             cantidad: parseInt(nuevoDetalle.cantidad),
             precio_unitario: parseFloat(nuevoDetalle.precio_unitario)
         });
-        setNuevoDetalle({ id_producto: '', cantidad: '', precio_detalle: '' });
+
+        setNuevoDetalle({ id_producto: '', cantidad: '', precio_unitario: '' });
         setProductoSeleccionado(null);
+    };
+
+    const validarYAgregarVenta = () => {
+        if (!nuevaVenta.id_cliente) {
+            alert("Selecciona un cliente.");
+            return;
+        }
+        if (detallesVenta.length === 0) {
+            alert("Agrega al menos un producto.");
+            return;
+        }
+        agregarVenta();
     };
 
     return (
@@ -105,7 +111,7 @@ const ModalRegistroVenta = ({
             <Modal.Body>
                 <Form>
                     <Row>
-                        <Col xs={12} sm={12} md={4} lg={4}>
+                        <Col md={4}>
                             <Form.Group className="mb-3" controlId="formCliente">
                                 <Form.Label>Cliente</Form.Label>
                                 <AsyncSelect
@@ -119,10 +125,10 @@ const ModalRegistroVenta = ({
                                 />
                             </Form.Group>
                         </Col>
-                        <Col xs={12} sm={12} md={4} lg={4}>
+                        <Col md={4}>
                             <Form.Group className="mb-3" controlId="formFechaVenta">
                                 <Form.Label>Fecha de Venta</Form.Label>
-                                <br></br>
+                                <br />
                                 <DatePicker
                                     selected={nuevaVenta.fecha_venta}
                                     onChange={(date) => setNuevaVenta(prev => ({ ...prev, fecha_venta: date }))}
@@ -139,7 +145,7 @@ const ModalRegistroVenta = ({
                     <hr />
                     <h5>Agregar Detalle de Venta</h5>
                     <Row>
-                        <Col xs={12} sm={12} md={4} lg={4}>
+                        <Col md={4}>
                             <Form.Group className="mb-3" controlId="formProducto">
                                 <Form.Label>Producto</Form.Label>
                                 <AsyncSelect
@@ -153,7 +159,7 @@ const ModalRegistroVenta = ({
                                 />
                             </Form.Group>
                         </Col>
-                        <Col xs={12} sm={12} md={3} lg={3}>
+                        <Col md={3}>
                             <Form.Group className="mb-3" controlId="formCantidad">
                                 <Form.Label>Cantidad</Form.Label>
                                 <FormControl
@@ -167,19 +173,19 @@ const ModalRegistroVenta = ({
                                 />
                             </Form.Group>
                         </Col>
-                        <Col xs={7} sm={8} md={3} lg={3}>
+                        <Col md={3}>
                             <Form.Group className="mb-3" controlId="formPrecioDetalle">
                                 <Form.Label>Precio Unitario</Form.Label>
                                 <FormControl
                                     type="number"
-                                    name="precio_detalle"
+                                    name="precio_unitario"
                                     value={nuevoDetalle.precio_unitario}
                                     disabled
                                     placeholder="Automático"
                                 />
                             </Form.Group>
                         </Col>
-                        <Col xs={5} sm={4} md={2} lg={2} className="d-flex align-items-center mt-3">
+                        <Col md={2} className="d-flex align-items-center mt-3">
                             <Button style={{ width: '100%' }} variant="success" onClick={manejarAgregarDetalle}>
                                 Agregar Producto
                             </Button>
@@ -199,7 +205,7 @@ const ModalRegistroVenta = ({
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {detallesVenta.map((detalle,index) => (
+                                    {detallesVenta.map((detalle, index) => (
                                         <tr key={index}>
                                             <td>{detalle.nombre_producto}</td>
                                             <td>{detalle.cantidad}</td>
@@ -227,7 +233,7 @@ const ModalRegistroVenta = ({
                 <Button variant="secondary" onClick={() => setMostrarModal(false)}>
                     Cancelar
                 </Button>
-                <Button variant="primary" onClick={agregarVenta}>
+                <Button variant="primary" onClick={validarYAgregarVenta}>
                     Crear Venta
                 </Button>
             </Modal.Footer>

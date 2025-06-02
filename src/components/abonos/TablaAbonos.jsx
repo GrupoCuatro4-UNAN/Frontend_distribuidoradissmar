@@ -11,7 +11,8 @@ const TablaAbonos = ({
   elementosPorPagina,
   paginaActual,
   establecerPaginaActual,
-  abrirModalEliminacion }) => {
+  abrirModalEliminacion,
+  abrirModalEdicionAbono }) => {
   // Renderizado condicional según el estado recibido por props
   if (cargando) {
     return <div>Cargando abonos...</div>; // Muestra mensaje mientras carga
@@ -53,7 +54,7 @@ const TablaAbonos = ({
                   variant="outline-warning"
                   size="sm"
                   className="me-2"
-                  onClick={() => abrirModalActualizacion(venta)}
+                  onClick={() => abrirModalEdicionAbono(abono)}
                 >
                   <i className="bi bi-pencil"></i>
                 </Button>

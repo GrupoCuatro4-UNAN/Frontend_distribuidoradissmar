@@ -50,8 +50,9 @@ const Ventas = () => {
         detalles: detalles.map(d => ({
           id_producto: d.id_producto,
           cantidad: d.cantidad,
-          precio_detalle: d.precio_unitario // <- se envía como precio_detalle para coincidir con la tabla
+          precio_detalle: d.precio_detalle ?? d.precio_unitario ?? 0
         }))
+
       };
 
       console.log(`Enviando ID venta: ${ventaActualizada.id_venta}`, JSON.stringify(ventaData));

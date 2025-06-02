@@ -11,7 +11,8 @@ const TablaProductos = ({
   totalElementos,
   elementosPorPagina,
   paginaActual,
-  establecerPaginaActual
+  establecerPaginaActual,
+  abrirModalEdicion
 }) => {
   if (cargando) return <div>Cargando productos...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -51,7 +52,7 @@ const TablaProductos = ({
                   variant="outline-warning"
                   size="sm"
                   className="me-2"
-                  onClick={() => abrirModalActualizacion(venta)}
+                  onClick={() => abrirModalEdicion(producto)}
                 >
                   <i className="bi bi-pencil"></i>
                 </Button>
