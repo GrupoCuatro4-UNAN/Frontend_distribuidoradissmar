@@ -8,10 +8,10 @@ import "../../App.css"; // Estilos personalizados de la aplicación
 const Encabezado = () => {
   // Estado para controlar el colapso del menú lateral
   const [estaColapsado, setEstaColapsado] = useState(false);
-  
+
   // Hook para manejar la navegación entre rutas
   const navegar = useNavigate();
-  
+
   // Hook para obtener la ubicación actual de la ruta
   const ubicacion = useLocation();
 
@@ -123,24 +123,24 @@ const Encabezado = () => {
                 <strong>Creditos</strong>
               </Nav.Link>
 
-              {/* Opción de navegación a Detalles_Compras*/}
-              { /* <Nav.Link
-                onClick={() => navegarA("/detalles_Compras")}
+              {/* Opción de navegación a Estadisticas*/}
+              {<Nav.Link
+                onClick={() => navegarA("/estadisticas")}
                 className={estaColapsado ? "text-black" : "text-white"}
               >
                 {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
-                <strong>Detalles_Compras</strong>
+                <strong>Estadisticas</strong>
               </Nav.Link>
 
-               Opción de navegación a Detalles_Ventas
+              /*Opción de navegación a Detalles_Ventas*/}
               <Nav.Link
-                onClick={() => navegarA("/detalles_ventas")}
+                onClick={() => navegarA("/dashboard")}
                 className={estaColapsado ? "text-black" : "text-white"}
               >
                 {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
-                <strong>Detalles_Ventas</strong>
+                <strong>Dashboard</strong>
               </Nav.Link>
-*/ }
+
               {/* Opción de navegación a Productos*/}
               <Nav.Link
                 onClick={() => navegarA("/productos")}

@@ -10,6 +10,8 @@ import Creditos from "./views/Creditos";
 import Productos from "./views/Productos";
 import Ventas from "./views/Ventas";
 import './App.css';
+import Estadisticas from "./views/Estadisticas";
+import Dashboard from "./views/Dashboard";
 
 const App = () => {
   return (
@@ -25,6 +27,8 @@ const App = () => {
         <Route path="/Creditos" element={<Creditos />} />
         <Route path="/Productos" element={<Productos />} />
         <Route path="/Ventas" element={<Ventas/>} />
+        <Route path="/Estadisticas" element={<Estadisticas/>} />
+        <Route path="/Dashboard" element={<Dashboard/>} />
         </Routes>
 
 

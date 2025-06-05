@@ -282,7 +282,10 @@ const Ventas = () => {
       />
 
     </Container>
+    
   );
+
+  
 };
 
 export default Ventas;
