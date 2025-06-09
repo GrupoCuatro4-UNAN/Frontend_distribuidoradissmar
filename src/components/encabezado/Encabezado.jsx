@@ -94,7 +94,7 @@ const Encabezado = () => {
                     onClick={() => navegarA("/clientes")}
                     className={estaColapsado ? "text-black" : "text-white"}
                   >
-                    {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
+                    {estaColapsado ? <i className="bi-box2-heart-fill me-2"></i> : null}
                     <strong>Clientes</strong>
                   </Nav.Link>
 
@@ -103,7 +103,7 @@ const Encabezado = () => {
                     onClick={() => navegarA("/abonos")}
                     className={estaColapsado ? "text-black" : "text-white"}
                   >
-                    {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
+                    {estaColapsado ? <i className="bi bi-wallet2"></i> : null}
                     <strong>Abonos</strong>
                   </Nav.Link>
 
@@ -112,7 +112,7 @@ const Encabezado = () => {
                     onClick={() => navegarA("/compras")}
                     className={estaColapsado ? "text-black" : "text-white"}
                   >
-                    {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
+                    {estaColapsado ? <i className="bi bi-basket-fill me-2"></i> : null}
                     <strong>Compras</strong>
                   </Nav.Link>
 
@@ -121,7 +121,7 @@ const Encabezado = () => {
                     onClick={() => navegarA("/creditos")}
                     className={estaColapsado ? "text-black" : "text-white"}
                   >
-                    {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
+                    {estaColapsado ? <i className="bi bi-credit-card-fill"></i> : null}
                     <strong>Créditos</strong>
                   </Nav.Link>
 
@@ -130,7 +130,7 @@ const Encabezado = () => {
                     onClick={() => navegarA("/estadisticas")}
                     className={estaColapsado ? "text-black" : "text-white"}
                   >
-                    {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
+                    {estaColapsado ? <i className=" bi-pc-display-horizontal"></i> : null}
                     <strong>Estadísticas</strong>
                   </Nav.Link>
 
@@ -139,7 +139,7 @@ const Encabezado = () => {
                     onClick={() => navegarA("/dashboard")}
                     className={estaColapsado ? "text-black" : "text-white"}
                   >
-                    {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
+                    {estaColapsado ? <i className="bi bi-speedometer2"></i> : null}
                     <strong>Dashboard</strong>
                   </Nav.Link>
 
@@ -148,7 +148,7 @@ const Encabezado = () => {
                     onClick={() => navegarA("/productos")}
                     className={estaColapsado ? "text-black" : "text-white"}
                   >
-                    {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
+                    {estaColapsado ? <i className="bi bi-people-fill me-2"></i> : null}
                     <strong>Productos</strong>
                   </Nav.Link>
 
@@ -157,7 +157,7 @@ const Encabezado = () => {
                     onClick={() => navegarA("/ventas")}
                     className={estaColapsado ? "text-black" : "text-white"}
                   >
-                    {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
+                    {estaColapsado ? <i className="bi bi-cart-fill me-2"></i> : null}
                     <strong>Ventas</strong>
                   </Nav.Link>
 
@@ -166,7 +166,7 @@ const Encabezado = () => {
                     onClick={cerrarSesion}
                     className={estaColapsado ? "text-black" : "text-white"}
                   >
-                    {estaColapsado ? <i className="bi-door-closed-fill me-2"></i> : null}
+                    {estaColapsado ? <i className="bi bi-box-arrow-right me-2"></i> : null}
                     <strong>Cerrar Sesión</strong>
                   </Nav.Link>
                 </Nav>
