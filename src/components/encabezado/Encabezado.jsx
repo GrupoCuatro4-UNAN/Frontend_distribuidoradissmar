@@ -39,149 +39,151 @@ const Encabezado = () => {
     // Barra de navegación fija en la parte superior
     <Navbar expand="sm" fixed="top" className="color-navbar">
       <Container>
-        {/* Logo y nombre de la ferretería */}
-        <Navbar.Brand
-          onClick={() => navegarA("/inicio")}
-          className="text-white"
-          style={{ cursor: "pointer" }}
-        >
-          <img alt="" src={logo} width="45" height="53" className="d-inline-block align-top" />{" "}
-          <strong>Distribuidora DISSMAR</strong>
-        </Navbar.Brand>
-
-        {/* Botón para alternar el menú lateral en pantallas pequeñas */}
-        <Navbar.Toggle
-          aria-controls="offcanvasNavbar-expand-sm"
-          onClick={alternarColapso}
-        />
-
-        {/* Menú lateral (Offcanvas) */}
-        <Navbar.Offcanvas
-          id="offcanvasNavbar-expand-sm"
-          aria-labelledby="offcanvasNavbarLabel-expand-sm"
-          placement="end"
-          show={estaColapsado}
-          onHide={() => setEstaColapsado(false)}
-        >
-          {/* Encabezado del menú lateral */}
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title
-              id="offcanvasNavbarLabel-expand-sm"
-              className={estaColapsado ? "color-texto-marca" : "text-white"}
+        {estaLogueado ? (
+          <>
+            {/* Logo y nombre de la ferretería */}
+            <Navbar.Brand
+              onClick={() => navegarA("/inicio")}
+              className="text-white"
+              style={{ cursor: "pointer" }}
             >
-              Menú
-            </Offcanvas.Title>
-          </Offcanvas.Header>
+              <img alt="" src={logo} width="45" height="53" className="d-inline-block align-top" />{" "}
+              <strong>Distribuidora DISSMAR</strong>
+            </Navbar.Brand>
 
-          {/* Cuerpo del menú lateral */}
-          <Offcanvas.Body>
-            {/* Navegación */}
-            <Nav className="justify-content-end flex-grow-1 pe-3">
+            {/* Botón para alternar el menú lateral en pantallas pequeñas */}
+            <Navbar.Toggle
+              aria-controls="offcanvasNavbar-expand-sm"
+              onClick={alternarColapso}
+            />
 
-              {/* Opción de navegación a Inicio*/}
-              <Nav.Link
-                onClick={() => navegarA("/inicio")}
-                className={estaColapsado ? "text-black" : "text-white"}
-              >
-                {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
-                <strong>Inicio</strong>
-              </Nav.Link>
-
-              {/* Opción de navegación a Clientes*/}
-              <Nav.Link
-                onClick={() => navegarA("/clientes")}
-                className={estaColapsado ? "text-black" : "text-white"}
-              >
-                {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
-                <strong>Clientes</strong>
-              </Nav.Link>
-
-              {/* Opción de navegación a Abonos*/}
-              <Nav.Link
-                onClick={() => navegarA("/abonos")}
-                className={estaColapsado ? "text-black" : "text-white"}
-              >
-                {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
-                <strong>Abonos</strong>
-              </Nav.Link>
-
-              {/* Opción de navegación a Compras*/}
-              <Nav.Link
-                onClick={() => navegarA("/compras")}
-                className={estaColapsado ? "text-black" : "text-white"}
-              >
-                {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
-                <strong>Compras</strong>
-              </Nav.Link>
-
-              {/* Opción de navegación a Creditos*/}
-              <Nav.Link
-                onClick={() => navegarA("/creditos")}
-                className={estaColapsado ? "text-black" : "text-white"}
-              >
-                {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
-                <strong>Creditos</strong>
-              </Nav.Link>
-
-              {/* Opción de navegación a Estadisticas*/}
-              {<Nav.Link
-                onClick={() => navegarA("/estadisticas")}
-                className={estaColapsado ? "text-black" : "text-white"}
-              >
-                {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
-                <strong>Estadisticas</strong>
-              </Nav.Link>
-
-              /*Opción de navegación a Detalles_Ventas*/}
-              <Nav.Link
-                onClick={() => navegarA("/dashboard")}
-                className={estaColapsado ? "text-black" : "text-white"}
-              >
-                {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
-                <strong>Dashboard</strong>
-              </Nav.Link>
-
-              {/* Opción de navegación a Productos*/}
-              <Nav.Link
-                onClick={() => navegarA("/productos")}
-                className={estaColapsado ? "text-black" : "text-white"}
-              >
-                {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
-                <strong>Productos</strong>
-              </Nav.Link>
-
-              {/* Opción de navegación a Ventas*/}
-              <Nav.Link
-                onClick={() => navegarA("/ventas")}
-                className={estaColapsado ? "text-black" : "text-white"}
-              >
-                {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
-                <strong>Ventas</strong>
-              </Nav.Link>
-
-              {/* Lógica condicional para mostrar Cerrar Sesión o Iniciar Sesión */}
-              {estaLogueado ? (
-                // Opción de cerrar sesión
-                <Nav.Link
-                  onClick={cerrarSesion}
-                  className={estaColapsado ? "text-black" : "text-white"}
+            {/* Menú lateral (Offcanvas) */}
+            <Navbar.Offcanvas
+              id="offcanvasNavbar-expand-sm"
+              aria-labelledby="offcanvasNavbarLabel-expand-sm"
+              placement="end"
+              show={estaColapsado}
+              onHide={() => setEstaColapsado(false)}
+            >
+              {/* Encabezado del menú lateral */}
+              <Offcanvas.Header closeButton>
+                <Offcanvas.Title
+                  id="offcanvasNavbarLabel-expand-sm"
+                  className={estaColapsado ? "color-texto-marca" : "text-white"}
                 >
-                  Cerrar Sesión
-                </Nav.Link>
-              ) : (
-                ubicacion.pathname === "/" && (
-                  // Opción de iniciar sesión (solo en la ruta raíz)
+                  Menú
+                </Offcanvas.Title>
+              </Offcanvas.Header>
+
+              {/* Cuerpo del menú lateral */}
+              <Offcanvas.Body>
+                {/* Navegación */}
+                <Nav className="justify-content-end flex-grow-1 pe-3">
+
+                  {/* Opción de navegación a Inicio */}
                   <Nav.Link
-                    onClick={() => navegarA("/")}
+                    onClick={() => navegarA("/inicio")}
                     className={estaColapsado ? "text-black" : "text-white"}
                   >
-                    Iniciar Sesión
+                    {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
+                    <strong>Inicio</strong>
                   </Nav.Link>
-                )
-              )}
-            </Nav>
-          </Offcanvas.Body>
-        </Navbar.Offcanvas>
+
+                  {/* Opción de navegación a Clientes */}
+                  <Nav.Link
+                    onClick={() => navegarA("/clientes")}
+                    className={estaColapsado ? "text-black" : "text-white"}
+                  >
+                    {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
+                    <strong>Clientes</strong>
+                  </Nav.Link>
+
+                  {/* Opción de navegación a Abonos */}
+                  <Nav.Link
+                    onClick={() => navegarA("/abonos")}
+                    className={estaColapsado ? "text-black" : "text-white"}
+                  >
+                    {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
+                    <strong>Abonos</strong>
+                  </Nav.Link>
+
+                  {/* Opción de navegación a Compras */}
+                  <Nav.Link
+                    onClick={() => navegarA("/compras")}
+                    className={estaColapsado ? "text-black" : "text-white"}
+                  >
+                    {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
+                    <strong>Compras</strong>
+                  </Nav.Link>
+
+                  {/* Opción de navegación a Créditos */}
+                  <Nav.Link
+                    onClick={() => navegarA("/creditos")}
+                    className={estaColapsado ? "text-black" : "text-white"}
+                  >
+                    {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
+                    <strong>Créditos</strong>
+                  </Nav.Link>
+
+                  {/* Opción de navegación a Estadísticas */}
+                  <Nav.Link
+                    onClick={() => navegarA("/estadisticas")}
+                    className={estaColapsado ? "text-black" : "text-white"}
+                  >
+                    {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
+                    <strong>Estadísticas</strong>
+                  </Nav.Link>
+
+                  {/* Opción de navegación a Dashboard */}
+                  <Nav.Link
+                    onClick={() => navegarA("/dashboard")}
+                    className={estaColapsado ? "text-black" : "text-white"}
+                  >
+                    {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
+                    <strong>Dashboard</strong>
+                  </Nav.Link>
+
+                  {/* Opción de navegación a Productos */}
+                  <Nav.Link
+                    onClick={() => navegarA("/productos")}
+                    className={estaColapsado ? "text-black" : "text-white"}
+                  >
+                    {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
+                    <strong>Productos</strong>
+                  </Nav.Link>
+
+                  {/* Opción de navegación a Ventas */}
+                  <Nav.Link
+                    onClick={() => navegarA("/ventas")}
+                    className={estaColapsado ? "text-black" : "text-white"}
+                  >
+                    {estaColapsado ? <i className="bi-house-door-fill me-2"></i> : null}
+                    <strong>Ventas</strong>
+                  </Nav.Link>
+
+                  {/* Opción de cerrar sesión */}
+                  <Nav.Link
+                    onClick={cerrarSesion}
+                    className={estaColapsado ? "text-black" : "text-white"}
+                  >
+                    {estaColapsado ? <i className="bi-door-closed-fill me-2"></i> : null}
+                    <strong>Cerrar Sesión</strong>
+                  </Nav.Link>
+                </Nav>
+              </Offcanvas.Body>
+            </Navbar.Offcanvas>
+          </>
+        ) : (
+          ubicacion.pathname === "/" && (
+            // Opción de iniciar sesión (solo en la ruta raíz)
+            <Nav.Link
+              onClick={() => navegarA("/")}
+              className={estaColapsado ? "text-black" : "text-white"}
+            >
+              Iniciar Sesión
+            </Nav.Link>
+          )
+        )}
       </Container>
     </Navbar>
   );

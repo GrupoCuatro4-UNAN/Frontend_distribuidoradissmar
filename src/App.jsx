@@ -12,6 +12,7 @@ import Ventas from "./views/Ventas";
 import './App.css';
 import Estadisticas from "./views/Estadisticas";
 import Dashboard from "./views/Dashboard";
+import RutaProtegida from "./components/rutas/RutasProtegida";
 
 const App = () => {
   return (
@@ -20,15 +21,15 @@ const App = () => {
       <Encabezado />
         <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/inicio" element={<Inicio />} />
-        <Route path="/Clientes" element={<Clientes />} />
-        <Route path="/Abonos" element={<Abonos />} />
-        <Route path="/Compras" element={<Compras />} />
-        <Route path="/Creditos" element={<Creditos />} />
-        <Route path="/Productos" element={<Productos />} />
-        <Route path="/Ventas" element={<Ventas/>} />
-        <Route path="/Estadisticas" element={<Estadisticas/>} />
-        <Route path="/Dashboard" element={<Dashboard/>} />
+        <Route path="/inicio" element={<RutaProtegida vista = {<Inicio />}/>} />
+        <Route path="/Clientes" element={<RutaProtegida vista = {<Clientes />}/>} />
+        <Route path="/Abonos" element={<RutaProtegida vista = {<Abonos />} />} />
+        <Route path="/Compras" element={<RutaProtegida vista = {<Compras />} />} />
+        <Route path="/Creditos" element={<RutaProtegida vista = {<Creditos />} />} />
+        <Route path="/Productos" element={<RutaProtegida vista = {<Productos />} />} />
+        <Route path="/Ventas" element={<RutaProtegida vista = {<Ventas/>} />} />
+        <Route path="/Estadisticas" element={<RutaProtegida vista = {<Estadisticas/>} />} />
+        <Route path="/Dashboard" element={<RutaProtegida vista = {<Dashboard/>} />} />
         </Routes>
 
 
