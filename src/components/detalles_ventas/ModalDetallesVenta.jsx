@@ -44,6 +44,8 @@ const ModalDetallesVenta = ({ mostrarModal, setMostrarModal, detalles, cargandoD
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={() => setMostrarModal(false)}>Cerrar</Button>
+
+            
             </Modal.Footer>
         </Modal>
     );

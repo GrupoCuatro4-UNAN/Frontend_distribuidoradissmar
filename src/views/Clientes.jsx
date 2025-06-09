@@ -5,6 +5,8 @@ import ModalRegistroCliente from '../components/clientes/ModalRegistroCliente';
 import CuadroBusquedas from '../components/busquedas/CuadroBusquedas';
 import ModalEliminacionCliente from '../components/clientes/ModalEliminacionCliente';
 import ModalEdicionCliente from '../components/clientes/ModalEdicionCliente';
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable';
 
 
 
@@ -63,7 +65,7 @@ const Clientes = () => {
 
     const actualizarCliente = async () => {
         if (!clienteEditado?.nombre || !clienteEditado?.apellido ||
-            !clienteEditado?.celular ||!clienteEditado?.direccion ||
+            !clienteEditado?.celular || !clienteEditado?.direccion ||
             !clienteEditado?.cedula) {
             setErrorCarga("Por favor, completa todos los campos obligatorios antes de guardar.");
             return;
@@ -199,9 +201,12 @@ const Clientes = () => {
     return (
         <Container className="mt-4">
             <Row>
+                <h1>.</h1>
+                <h1>.</h1>
+                
                 <Col lg={2} md={4} sm={4} xs={5}>
                     <Button variant="primary" onClick={() => setMostrarModal(true)} style={{ width: "100%" }}>
-                        Nuevo Cliente
+                        Nuevo Cliente.
                     </Button>
                 </Col>
                 <Col lg={5} md={8} sm={8} xs={7}>

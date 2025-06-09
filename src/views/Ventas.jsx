@@ -6,6 +6,7 @@ import ModalEliminacionVenta from '../components/ventas/ModalEliminacionVenta';
 import ModalRegistroVenta from '../components/ventas/ModalRegistroVenta';
 import ModalActualizacionVenta from '../components/ventas/ModalActualizacionVenta';
 
+
 const Ventas = () => {
   const [listaVentas, setListaVentas] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -232,6 +233,8 @@ const Ventas = () => {
         </Col>
       </Row>
       <br />
+
+
       <TablaVentas
         ventas={listaVentas}
         cargando={cargando}
@@ -282,10 +285,10 @@ const Ventas = () => {
       />
 
     </Container>
-    
+
   );
 
-  
+
 };
 
 export default Ventas;
