@@ -29,8 +29,7 @@ const TablaProductos = ({
             <th>Stock</th>
             <th>Categoría</th>
             <th>Acciones</th>
-            
-            
+
           </tr>
         </thead>
         <tbody>
