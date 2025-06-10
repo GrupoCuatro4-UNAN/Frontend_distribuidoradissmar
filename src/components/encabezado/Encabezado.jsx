@@ -268,10 +268,10 @@ const Encabezado = () => {
             <Navbar.Toggle
               aria-controls="offcanvasNavbar"
               onClick={alternarColapso}
-              className="d-lg-none border-0 text-white"
+              className="d-lg-none border-0 text-black"
               style={{
                 fontSize: esPantallaPequena ? '1.2rem' : '1.5rem',
-                padding: esPantallaPequena ? '4px 8px' : '6px 10px'
+                padding: esPantallaPequena ? '4px 8px' : '6px 10px',
               }}
             >
               <i className={estaColapsado ? 'bi-x-lg' : 'bi-list'}></i>
