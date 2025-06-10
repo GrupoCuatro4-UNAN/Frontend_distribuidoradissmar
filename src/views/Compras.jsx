@@ -4,6 +4,9 @@ import { Container, Button, Spinner, Alert, Row, Col } from "react-bootstrap";
 import ModalEliminacionCompra from '../components/compras/ModalEliminacionCompra';
 import CuadroBusquedas from '../components/busquedas/CuadroBusquedas';
 import ModalRegistroCompra from '../components/compras/ModalRegistroCompra';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import * as XLSX from 'xlsx';
 
 const Compras = () => {
   // Estados para manejar los datos
@@ -150,41 +153,54 @@ const Compras = () => {
     }
   };
 
+  // Función para generar reporte PDF
+  const generarPDFCompras = () => {
+    const doc = new jsPDF();
 
-  /* Registrar nueva compra
-  const registrarCompra = async () => {
-    if (!nuevaCompra.fecha_compra) {
-      setErrorCarga("La fecha de compra es obligatoria");
-      return;
+    // Configurar encabezado del documento
+    doc.setFillColor(28, 41, 51);
+    doc.rect(0, 0, 220, 30, 'F');
+    doc.setFontSize(28);
+    doc.setTextColor(255, 255, 255);
+    doc.text('Reporte de Compras', 20, 20);
+
+    // Configurar datos de la tabla
+    const columnasTabla = ['Fecha', 'Total'];
+    const datosTabla = listaCompras.map(compra => [compra.fecha_compra, compra.total_compra]);
+
+    // Generar tabla en el documento
+    doc.autoTable({
+      head: [columnasTabla],
+      body: datosTabla,
+      startY: 40,
+    });
+
+    // Actualizar número de páginas
+    const totalPaginas = doc.internal.getNumberOfPages();
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    for (let i = 1; i <= totalPaginas; i++) {
+      doc.setPage(i);
+      doc.text(`Página ${i} de ${totalPaginas}`, 20, doc.internal.pageSize.height - 10);
     }
 
-    try {
-      const respuesta = await fetch('http://localhost:3000/api/registrarcompra', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(nuevaCompra),
-      });
+    // Guardar el documento
+    doc.save(`Compras_${new Date().toLocaleDateString()}.pdf`);
+  };
 
-      if (!respuesta.ok) {
-        const errorData = await respuesta.json();
-        throw new Error(errorData.message || 'Error al registrar la compra');
-      }
+  // Función para generar reporte Excel
+  const exportarExcelCompras = () => {
+    const datosExcel = listaCompras.map(compra => ({
+      'Fecha': compra.fecha_compra,
+      'Total': compra.total_compra,
+    }));
 
-      // Limpiar y actualizar
-      await obtenerCompras();
-      setNuevaCompra({
-        fecha_compra: new Date().toISOString().split('T')[0]
-      });
-      setMostrarModal(false);
-      setErrorCarga(null);
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.json_to_sheet(datosExcel);
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Compras');
 
-    } catch (error) {
-      setErrorCarga(error.message);
-      console.error('Error al registrar compra:', error);
-    }
-  };*/
+    XLSX.writeFile(workbook, `Compras_${new Date().toLocaleDateString()}.xlsx`);
+  };
 
   return (
     <Container className="mt-5">
@@ -194,6 +210,16 @@ const Compras = () => {
         <Col lg={2} md={4} sm={4} xs={5}>
           <Button variant="primary" onClick={() => setMostrarModalRegistro(true)} style={{ width: "100%" }}>
             Nueva Compra
+          </Button>
+        </Col>
+        <Col lg={2} md={4} sm={4} xs={5}>
+          <Button variant="primary" onClick={generarPDFCompras} style={{ width: "100%" }}>
+            Generar Reporte PDF
+          </Button>
+        </Col>
+        <Col lg={2} md={4} sm={4} xs={5}>
+          <Button variant="success" onClick={exportarExcelCompras} style={{ width: "100%" }}>
+            Generar Reporte Excel
           </Button>
         </Col>
       </Row>
@@ -237,8 +263,6 @@ const Compras = () => {
             setMostrarModalEliminacion={setMostrarModalEliminacion}
             eliminarCompra={eliminarCompra}
           />
-
-
         </>
       )}
     </Container>
